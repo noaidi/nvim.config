@@ -1,0 +1,6 @@
+indent_width = 4
+indent_style = 'Tab'
+line_length = 80
+column_width = 80
+empty_lines = true
+string_style = 'single'
