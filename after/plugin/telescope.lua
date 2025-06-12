@@ -130,14 +130,18 @@ local function multiopen(prompt_bufnr, method)
 		local entry_bufnr = entry.bufnr
 
 		if entry_bufnr then
-			if not vim.api.nvim_buf_get_option(entry_bufnr, "buflisted") then
-				vim.api.nvim_buf_set_option(entry_bufnr, "buflisted", true)
+			if not vim.bo[entry_bufnr].buflisted then
+				vim.bo[entry_bufnr].buflisted = true
 			end
+
 			local command = i == 1 and "buffer" or edit_buf_cmd_map[method]
 
-			pcall(vim.cmd, string.format(
-				"%s %s", command, vim.api.nvim_buf_get_name(entry_bufnr)
-			))
+			pcall(function()
+				vim.cmd(string.format(
+					"%s %s",
+					command,
+					vim.api.nvim_buf_get_name(entry_bufnr)))
+			end)
 		else
 			local command = i == 1 and "edit" or edit_file_cmd_map[method]
 			if
@@ -147,7 +151,12 @@ local function multiopen(prompt_bufnr, method)
 				filename = require("plenary.path")
 					:new(vim.fn.fnameescape(filename))
 					:normalize(vim.loop.cwd())
-				pcall(vim.cmd, string.format("%s %s", command, filename))
+				pcall(function()
+					vim.cmd(string.format(
+						"%s %s",
+						command,
+						filename))
+				end)
 			end
 		end
 

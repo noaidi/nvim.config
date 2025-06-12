@@ -2,12 +2,39 @@
 -- See `:help vim.keymap.set()`
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
+-- Delete all buffers except current
+vim.keymap.set('n', '<leader>bd', function()
+	local visible_bufs = {}
+	for _, win in ipairs(vim.api.nvim_list_wins()) do
+		local buf = vim.api.nvim_win_get_buf(win)
+		visible_bufs[buf] = true
+	end
+
+	for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+		if not visible_bufs[bufnr]
+			and vim.api.nvim_buf_is_loaded(bufnr)
+			and vim.bo[bufnr].buflisted
+		then
+			vim.api.nvim_buf_delete(bufnr, {})
+		end
+	end
+end, { desc = "Delete all non-visible buffers" })
+
 -- Restart LSP
-vim.keymap.set(
-	'n', '<leader>R',
-	':LspRestart<Cr>',
-	{ desc = '[R]estart LSP' }
-)
+-- vim.keymap.set(
+-- 	'n', '<leader>R',
+-- 	function()
+-- 		for _, client in pairs(vim.lsp.get_clients()) do
+-- 			---@diagnostic disable-next-line: param-type-mismatch
+-- 			client.stop(true)
+-- 		end
+-- 		vim.defer_fn(function()
+-- 			vim.cmd('edit')
+-- 		end, 500)
+-- 	end,
+-- 	{ desc = '[R]estart LSP' }
+-- )
+
 
 -- Remap for dealing with word wrap
 vim.keymap.set(
