@@ -23,20 +23,20 @@ lspconfig.ts_ls.setup({
 	},
 })
 
--- lspconfig.svelte.setup({
--- 	settings = {
--- 		svelte = {
--- 			plugin = {
--- 				svelte = {
--- 					compilerWarnings = {
--- 						['a11y-no-static-element-interactions'] = 'ignore',
--- 						['a11y-no-noninteractive-element-interactions'] = 'ignore',
--- 					},
--- 				},
--- 			},
--- 		},
--- 	},
--- })
+lspconfig.svelte.setup({
+	-- settings = {
+	-- 	svelte = {
+	-- 		plugin = {
+	-- 			svelte = {
+	-- 				compilerWarnings = {
+	-- 					['a11y-no-static-element-interactions'] = 'ignore',
+	-- 					['a11y-no-noninteractive-element-interactions'] = 'ignore',
+	-- 				},
+	-- 			},
+	-- 		},
+	-- 	},
+	-- },
+})
 
 lspconfig.eslint.setup({
 	on_attach = function(_, bufnr)
